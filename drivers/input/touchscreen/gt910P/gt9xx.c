@@ -1002,8 +1002,13 @@ static void goodix_ts_work_func(struct work_struct *work)
         
         #if GTP_WITH_PEN
             id = coor_data[pos];
-			input_x  = 1200 -(coor_data[pos + 1] | (coor_data[pos + 2] << 8));
+#ifdef CONFIG_MACH_LENOVO_TBX304
+            input_x  = 800 -(coor_data[pos + 1] | (coor_data[pos + 2] << 8));
+            input_y  =1280-( coor_data[pos + 3] | (coor_data[pos + 4] << 8));
+#else
+            input_x  = 1200 -(coor_data[pos + 1] | (coor_data[pos + 2] << 8));
             input_y  =1920-( coor_data[pos + 3] | (coor_data[pos + 4] << 8));
+#endif
             input_w  = coor_data[pos + 5] | (coor_data[pos + 6] << 8);
             if ((id & 0x80)) 
 			{
@@ -1075,8 +1080,14 @@ static void goodix_ts_work_func(struct work_struct *work)
             {
 				GTP_DEBUG("Devices touch Down(Slot)!");
 				pre_finger = 1;
+#ifdef CONFIG_MACH_LENOVO_TBX304
+                input_x  =800 - ( coor_data[pos + 1] | (coor_data[pos + 2] << 8));
+                input_y  = 1280-(coor_data[pos + 3] | (coor_data[pos + 4] << 8));
+#else
                 input_x  =1200 - ( coor_data[pos + 1] | (coor_data[pos + 2] << 8));
                 input_y  = 1920-(coor_data[pos + 3] | (coor_data[pos + 4] << 8));
+#endif
+
                 input_w  = coor_data[pos + 5] | (coor_data[pos + 6] << 8);
 
                 gtp_touch_down(ts, id, input_x, input_y, input_w);
@@ -1110,8 +1121,13 @@ static void goodix_ts_work_func(struct work_struct *work)
             coor_data = &point_data[i * 8 + 3];
 
             id = coor_data[0] & 0x0F;
+#ifdef CONFIG_MACH_LENOVO_TBX304
+            input_x  = 800 - (coor_data[1] | (coor_data[2] << 8));
+            input_y  = 1280- (coor_data[3] | (coor_data[4] << 8));
+#else
             input_x  = 1200 - (coor_data[1] | (coor_data[2] << 8));
             input_y  = 1920- (coor_data[3] | (coor_data[4] << 8));
+#endif
             input_w  = coor_data[5] | (coor_data[6] << 8);
         
         #if GTP_WITH_PEN
