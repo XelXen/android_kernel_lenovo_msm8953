@@ -1224,8 +1224,10 @@ CSID_TG:
 	 * probed on this slot
 	 */
 	s_ctrl->is_probe_succeed = 1;
+#if defined(CONFIG_MACH_LENOVO_TB8703) || defined(CONFIG_MACH_LENOVO_TBX704) || defined(CONFIG_MACH_LENOVO_TB8704) || defined(CONFIG_MACH_LENOVO_TB8804) || defined(CONFIG_MACH_LENOVO_TB8504) || defined(CONFIG_MACH_LENOVO_TBX304)
 	msm_sensor_init_device_name();
 	msm_sensor_set_module_info(s_ctrl);
+#endif
 	return rc;
 
 camera_power_down:
